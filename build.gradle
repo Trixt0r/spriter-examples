@@ -52,7 +52,7 @@ project(":core") {
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile 'com.brashmonkey.spriter:gdx-spriter:1.0'
+        compile 'com.brashmonkey.spriter:gdx-spriter:1.0.1'
     }
 }
 
