@@ -3,7 +3,7 @@ buildscript {
         mavenLocal()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        jcenter()
+        gradlePluginPortal()
         maven {  url 'https://raw.github.com/Trixt0r/gdx-spriter/mvn/' }
         maven {  url 'https://raw.github.com/Trixt0r/spriter/mvn/' }
     }
@@ -36,23 +36,23 @@ allprojects {
 }
 
 project(":desktop") {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
 }
 
 project(":core") {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile 'com.brashmonkey.spriter:gdx-spriter:1.0.1'
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api 'com.brashmonkey.spriter:gdx-spriter:1.0.1'
     }
 }
 
