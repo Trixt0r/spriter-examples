@@ -36,10 +36,10 @@ public class AnimationSpeedTest {
 		}
 		
 		@Override
-		public boolean scrolled(int amount) {
+		public boolean scrolled(float amountX, float amountY) {
 			float scale = 1f;
 			if(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)) scale *= 5f;
-			player.speed -= amount*scale;
+			player.speed -= amountY*scale;
 			return false;
 		}
 		

@@ -2,8 +2,6 @@ package com.brashmonkey.spriter.examples.desktop;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -50,13 +48,5 @@ public class AtlasTest extends ApplicationAdapter{
 	public void dispose(){
 		this.loader.dispose();
 		this.batch.dispose();
-	}
-	
-	public static void main(String[] args){
-		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.width = 1280;
-		cfg.height = 720;
-		
-		new LwjglApplication(new AtlasTest(), cfg);
 	}
 }
