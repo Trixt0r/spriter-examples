@@ -29,8 +29,8 @@ public class CompositionTest {
 				 tweener.setBaseAnimation("walk");
 				 addInputProcessor(new AnimationSwitchTest.AnimationSwitcher(tweener.getSecondPlayer()));
 				 addInputProcessor(new InputAdapter(){
-						public boolean scrolled(int am){
-							tweener.setWeight(tweener.getWeight() - (float)am/10f);
+					public boolean scrolled(float amountX, float amountY) {
+							tweener.setWeight(tweener.getWeight() - amountY/10f);
 							tweener.setWeight(MathUtils.clamp(tweener.getWeight(), 0f, 1f));
 							return false;
 						}

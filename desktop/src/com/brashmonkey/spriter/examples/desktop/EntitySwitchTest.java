@@ -23,8 +23,8 @@ public class EntitySwitchTest {
 
 				final Data guyData = new SCMLReader(Gdx.files.internal("GreyGuy/player.scml").read()).getData();
 				loader = new Loader(guyData);
-				loader.load(Gdx.files.internal("GreyGuy/player.scml").file());
-				
+				loader.load(Gdx.files.internal("GreyGuy/player.scml"));
+
 				addInputProcessor(new AnimationSwitchTest.AnimationSwitcher(player));
 				addInputProcessor(new InputAdapter(){					
 					@Override

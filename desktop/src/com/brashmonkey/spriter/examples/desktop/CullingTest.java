@@ -29,12 +29,12 @@ public class CullingTest {
 			public void create(){
 				player = new Player(data.getEntity(0));
 				addInputProcessor(new InputAdapter(){
-					public boolean scrolled(int am){
-						am *= 5;
-						rect.left += am;
-						rect.right -= am;
-						rect.bottom += am;
-						rect.top -= am;
+					public boolean scrolled(float amountX, float amountY) {
+						amountY *= 5;
+						rect.left += amountY;
+						rect.right -= amountY;
+						rect.bottom += amountY;
+						rect.top -= amountY;
 						rect.calculateSize();
 						return false;
 					}

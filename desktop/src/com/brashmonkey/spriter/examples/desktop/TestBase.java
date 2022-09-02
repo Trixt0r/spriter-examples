@@ -1,15 +1,9 @@
 package com.brashmonkey.spriter.examples.desktop;
 
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.utils.Align;
-import org.lwjgl.input.Keyboard;
-
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -26,9 +20,9 @@ import com.brashmonkey.spriter.SCMLReader;
 import com.brashmonkey.spriter.gdx.Loader;
 import com.brashmonkey.spriter.gdx.Drawer;
 
-public class TestBase implements ApplicationListener{
-	
-	private String path;
+public abstract class TestBase implements ApplicationListener{
+
+	String path;
 	private FileHandle scmlHandle;
 	private SCMLReader reader;
 	
@@ -43,6 +37,8 @@ public class TestBase implements ApplicationListener{
 	public static SpriteBatch batch;
 	public static OrthographicCamera camera;
 	public static ApplicationListener test;
+	public static boolean launchesIndividually = true;
+	public static TestBase currentTestBase;
 	public static BitmapFont font;
 	public static String information = "";
 	public static Vector2 infoPosition = new Vector2(0, 0);
@@ -53,11 +49,9 @@ public class TestBase implements ApplicationListener{
 		players.add(player);
 		return player;
 	}
-	
-	public TestBase(String path, LwjglApplicationConfiguration cfg){
+
+	protected TestBase(String path){
 		this.path = path;
-		new LwjglApplication(this, cfg);
-		Keyboard.enableRepeatEvents(true);
 	}
 	
 	public static void addInputProcessor(InputProcessor processor){
@@ -76,8 +70,8 @@ public class TestBase implements ApplicationListener{
 			data = reader.getData();
 			
 			loader = new Loader(data);
-			loader.load(scmlHandle.file());
-			
+			loader.load(scmlHandle);
+
 			drawer = new Drawer(loader, batch, renderer);
 		}
 		
@@ -137,37 +131,37 @@ public class TestBase implements ApplicationListener{
 		font.dispose();
 		if(test != null) test.dispose();
 	}
-	
-	public static void create(String path, int width, int height, String title){
-		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.width = width;
-		cfg.height = height;
-		cfg.title = "Test: "+title;
-		new TestBase(path, cfg);
+
+	public static void create(String path, int width, int height, String title) {
+		String testBaseName;
+		if (!launchesIndividually) {
+			testBaseName = "com.brashmonkey.spriter.examples.HtmlTestBase";
+		} else {
+			testBaseName = "com.brashmonkey.spriter.examples.desktop.DesktopTestBase";
+		}
+		try {
+			Class testBase = ClassReflection.forName(testBaseName);
+			currentTestBase = (TestBase) ClassReflection.getDeclaredMethod(testBase, "createMultiPlatform", String.class, int.class, int.class, String.class).invoke(null, path, width, height, title);
+		} catch (ReflectionException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void create(String path, String title){
 		create(path, 1280, 720, title);
 	}
-	
-	public static void create(String path, int width, int height){
-		StackTraceElement[] stack = Thread.currentThread ().getStackTrace ();
-		StackTraceElement main = stack[stack.length - 1];
-		String title = main.getClassName();
-		try {
-			title = Class.forName(main.getClassName()).getSimpleName();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+
+	public static void create(Class test, String path, int width, int height){
+		String title = test.getSimpleName();
 		create(path, width, height, title);
 	}
-	
-	public static void create(String path){
-		create(path, 1280, 720);
+
+	public static void create(Class test, String path){
+		create(test, path, 1280, 720);
 	}
 	
 	public static void main(String[] args){
-		create("monster/basic_002.scml");
+		create(TestBase.class, "monster/basic_002.scml");
 		TestBase.test = new ApplicationAdapter() {
 			public void create(){
 				players.add(new Player(data.getEntity(0)));

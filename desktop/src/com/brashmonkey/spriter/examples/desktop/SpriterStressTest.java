@@ -14,7 +14,7 @@ import com.brashmonkey.spriter.gdx.Loader;
 public class SpriterStressTest {
 	
 	public static void main(String[] args){
-		create(null, "Simple stress test");
+		create((String) null, "Simple stress test");
 		information = "Hold space to draw.";
 		test = new ApplicationAdapter() {
 			String[] files = {"monster/basic_002.scml", "GreyGuy/player.scml"};

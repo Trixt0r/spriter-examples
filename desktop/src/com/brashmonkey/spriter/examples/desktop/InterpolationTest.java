@@ -37,10 +37,10 @@ public class InterpolationTest {
 						else if(b == Buttons.RIGHT) switcher.player = inter.getSecondPlayer();
 						return false;
 					}
-					
-					public boolean scrolled(int am){
+
+					public boolean scrolled(float amountX, float amountY) {
 						float weight = ((TweenedAnimation)inter.getAnimation()).weight;
-						weight -= (float)am/10f;
+						weight -= amountY/10f;
 						((TweenedAnimation)inter.getAnimation()).weight = MathUtils.clamp(weight, 0f, 1f);
 						return false;
 					}
